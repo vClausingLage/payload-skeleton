@@ -1,16 +1,19 @@
 import React from 'react'
-import './styles.css'
+import { headers } from 'next/headers'
+import './globals.css'
+import { defaultLocale } from '@/i18n/config'
 
 export const metadata = {
-  description: 'A blank template using Payload in a Next.js app.',
-  title: 'Payload Blank Template',
+  description: 'A clean Payload + Next.js skeleton.',
+  title: 'Payload Skeleton',
 }
 
 export default async function RootLayout(props: { children: React.ReactNode }) {
   const { children } = props
+  const locale = (await headers()).get('x-locale') || defaultLocale
 
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body>
         <main>{children}</main>
       </body>

@@ -1,67 +1,93 @@
-# Payload Blank Template
+# Payload
 
-This template comes configured with the bare minimum to get started on anything you need.
+## Dev Docker (Postgres + Nginx)
 
-## Quick start
+The dev stack lives in `docker/compose.yml` and exposes the app at `http://localhost:8080`.
 
-This template can be deployed directly from our Cloud hosting and it will setup MongoDB and cloud S3 object storage for media.
+1. Create `.env` from `.env.example` and set `PAYLOAD_SECRET`.
+2. Start the stack:
 
-## Quick Start - local setup
+```bash
+docker compose -f docker/compose.yml up
+```
 
-To spin up this template locally, follow these steps:
+### Notes
 
-### Clone
+- Postgres is available on `localhost:5432`
+- Nginx proxies to the Next/Payload dev server
 
-After you click the `Deploy` button above, you'll want to have standalone copy of this repo on your machine. If you've already cloned this repo, skip to [Development](#development).
+## Tailwind + shadcn/ui
 
-### Development
+- Tailwind config: `tailwind.config.ts`
+- PostCSS: `postcss.config.cjs`
+- shadcn config: `components.json`
+- Globals: `src/app/(frontend)/globals.css`
 
-1. First [clone the repo](#clone) if you have not done so already
-2. `cd my-project && cp .env.example .env` to copy the example environment variables. You'll need to add the `MONGODB_URL` from your Cloud project to your `.env` if you want to use S3 storage and the MongoDB database that was created for you.
+## Localization
 
-3. `pnpm install && pnpm dev` to install dependencies and start the dev server
-4. open `http://localhost:3000` to open the app in your browser
+1. enable in `payload.config.ts`:
 
-That's it! Changes made in `./src` will be reflected in your app. Follow the on-screen instructions to login and create your first admin user. Then check out [Production](#production) once you're ready to build and serve your app, and [Deployment](#deployment) when you're ready to go live.
+```ts
+export default buildConfig({
+  localization: {
+    locales: ['en', 'de'],
+    defaultLocale: 'en',
+  },
+  // ...
+})
+```
+2. add translations to your fields:
 
-#### Docker (Optional)
+```ts
+export const Users: CollectionConfig = {
+  slug: 'users',
+  fields: [
+    {
+      name: 'Name',
+      type: 'text',
+      localized: true,
+    },
+    // ...
+  ],
+}
+```
+## Internationalization (i18n)
 
-If you prefer to use Docker for local development instead of a local MongoDB instance, the provided docker-compose.yml file can be used.
+1. install `pnpm install @payloadcms/translations`
+2. enable in `payload.config.ts`:
+```ts
+export default buildConfig({
+  i18n: {
+    supportedLanguages: ['en', 'de'],
+    fallbackLocale: 'en',
+  },
+  // ...
+})
+```
+3. add translations to your fields:
 
-To do so, follow these steps:
+```ts
+export const Users: CollectionConfig = {
+  slug: 'users',
+  fields: [
+    {
+      name: 'Bio',
+      type: 'textarea',
+      labels: {
+        en: 'Biography',
+        de: 'Biografie',
+      },
+      i18n: true,
+    },
+    // ...
+  ],
+}
+```
 
-- Modify the `MONGODB_URL` in your `.env` file to `mongodb://127.0.0.1/<dbname>`
-- Modify the `docker-compose.yml` file's `MONGODB_URL` to match the above `<dbname>`
-- Run `docker-compose up` to start the database, optionally pass `-d` to run in the background.
+## Hybrid i18n (JSON + Payload)
 
-## How it works
-
-The Payload config is tailored specifically to the needs of most websites. It is pre-configured in the following ways:
-
-### Collections
-
-See the [Collections](https://payloadcms.com/docs/configuration/collections) docs for details on how to extend this functionality.
-
-- #### Users (Authentication)
-
-  Users are auth-enabled collections that have access to the admin panel.
-
-  For additional help, see the official [Auth Example](https://github.com/payloadcms/payload/tree/main/examples/auth) or the [Authentication](https://payloadcms.com/docs/authentication/overview#authentication-overview) docs.
-
-- #### Media
-
-  This is the uploads enabled collection. It features pre-configured sizes, focal point and manual resizing to help you manage your pictures.
-
-### Docker
-
-Alternatively, you can use [Docker](https://www.docker.com) to spin up this template locally. To do so, follow these steps:
-
-1. Follow [steps 1 and 2 from above](#development), the docker-compose file will automatically use the `.env` file in your project root
-1. Next run `docker-compose up`
-1. Follow [steps 4 and 5 from above](#development) to login and create your first admin user
-
-That's it! The Docker instance will help you get up and running quickly while also standardizing the development environment across your teams.
-
-## Questions
-
-If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
+- UI strings live in `src/i18n/dictionaries/*.json`
+- Marketing/content strings live in Payload collections with `localized: true`
+- Locale routing is prefix-based (e.g. `/en`, `/de`) via `src/middleware.ts`
+- Locale switcher: `src/components/LocaleSwitcher.tsx`
+- Hreflang alternates are set in `src/app/(frontend)/[locale]/layout.tsx`

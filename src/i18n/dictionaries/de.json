@@ -1,0 +1,12 @@
+{
+  "home": {
+    "title": "Willkommen in deinem neuen Projekt.",
+    "welcomeBack": "Willkommen zurück, {{email}}",
+    "adminCta": "Zum Admin-Bereich",
+    "docsCta": "Dokumentation",
+    "editHint": "Diese Seite bearbeitest du hier",
+    "tagline": "Ein sauberes Payload + Next.js Skeleton mit Tailwind und shadcn/ui.",
+    "seoTitle": "Payload Skeleton",
+    "seoDescription": "Ein sauberes Payload + Next.js Skeleton mit Tailwind, shadcn/ui und integrierter Lokalisierung."
+  }
+}
