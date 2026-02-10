@@ -1,0 +1,26 @@
+{
+  "name": "@vcl/payload-gen",
+  "version": "0.1.0",
+  "type": "module",
+	"author": "Dr. Vincent Clausing-Lage",
+  "bin": {
+    "payload-gen": "./dist/cli.js"
+  },
+  "files": ["dist", "README.md", "LICENSE"],
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "dev": "tsx src/cli.ts",
+    "build": "tsup src/cli.ts --format esm --platform node --target node18 --out-dir dist",
+    "test:pack": "npm pack"
+  },
+  "dependencies": {
+    "commander": "^12.0.0",
+    "fs-extra": "^11.2.0",
+		"semver": "^7.7.4"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  }
+}
