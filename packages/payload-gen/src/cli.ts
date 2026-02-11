@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { Command } from "commander";
-import { addBlock } from "./commands/addBlock.js";
-import { addPage } from "./commands/addPage.js";
+import AddBlock from "./commands/addBlock.js";
+import AddPage from "./commands/addPage.js";
 
 const program = new Command();
 
@@ -14,12 +14,12 @@ program
   .command("add:block")
   .argument("<name>", "Block name, e.g. NewBlock")
   .option("-p, --path <path>", "Target path", "src/blocks")
-  .action(addBlock);
+  .action(AddBlock);
 
 program
   .command("add:page")
   .argument("<name>", "Page name, e.g. LandingPage")
   .option("-p, --path <path>", "Target path", "src/pages")
-  .action(addPage);
+  .action(AddPage);
 
 program.parse();
