@@ -1,4 +1,8 @@
 {
   "private": true,
-  "workspaces": ["packages/*", "app/*"]
+  "workspaces": ["packages/*", "app/*"],
+  "scripts": {
+    "docker:up": "cd docker && docker compose up -d && echo '💡 app is running at http://localhost:3000'",
+    "docker:halt": "cd docker && docker compose stop && echo '💤 app has been stopped'"
+  }
 }

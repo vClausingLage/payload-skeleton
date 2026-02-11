@@ -10,10 +10,11 @@ services:
       pnpm install &&
       pnpm dev -H 0.0.0.0 -p 3000"
     volumes:
-      - ..:/home/node/app
+      - ../app:/home/node/app
+      - ../packages:/home/node/packages
       - node_modules:/home/node/app/node_modules
     env_file:
-      - ../.env
+      - ../app/.env
     environment:
       - NODE_ENV=development
       - NEXT_TELEMETRY_DISABLED=1
