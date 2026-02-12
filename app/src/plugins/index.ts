@@ -1,4 +1,5 @@
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
+import { multiTenantPlugin } from '@payloadcms/plugin-multi-tenant'
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
@@ -26,6 +27,22 @@ const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
 }
 
 export const plugins: Plugin[] = [
+  multiTenantPlugin({
+    collections: {
+      categories: {},
+      media: {},
+      pages: {},
+      posts: {},
+    },
+    tenantsArrayFieldOverrides: {
+      admin: {
+        description: 'Assign which tenants can access this user.',
+      },
+    },
+    tenantsSlug: 'tenants',
+    userHasAccessToAllTenants: (user: { isSuperAdmin?: boolean } | null) =>
+      Boolean(user?.isSuperAdmin),
+  }),
   redirectsPlugin({
     collections: ['pages', 'posts'],
     overrides: {

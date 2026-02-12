@@ -12,7 +12,7 @@ export const Users: CollectionConfig = {
     update: authenticated,
   },
   admin: {
-    defaultColumns: ['name', 'email'],
+    defaultColumns: ['name', 'email', 'isSuperAdmin'],
     useAsTitle: 'name',
   },
   auth: true,
@@ -20,6 +20,11 @@ export const Users: CollectionConfig = {
     {
       name: 'name',
       type: 'text',
+    },
+    {
+      name: 'isSuperAdmin',
+      type: 'checkbox',
+      defaultValue: false,
     },
   ],
   timestamps: true,
