@@ -1,7 +1,8 @@
 {
   "private": true,
-  "workspaces": ["packages/*", "app/*"],
+  "workspaces": ["packages/*", "app"],
   "scripts": {
+    "dev": "pnpm --filter app dev",
     "docker:up": "cd docker && docker compose up -d",
     "docker:halt": "cd docker && docker compose stop"
   }

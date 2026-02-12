@@ -12,6 +12,7 @@ import { beforeSyncWithSearch } from '@/search/beforeSync'
 
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
+import { defaultLocale, isLocale } from '@/i18n/config'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
@@ -19,8 +20,9 @@ const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
 
 const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
   const url = getServerSideURL()
+  const locale = isLocale((doc as { locale?: string })?.locale) ? (doc as { locale?: string }).locale : defaultLocale
 
-  return doc?.slug ? `${url}/${doc.slug}` : url
+  return doc?.slug ? `${url}/${locale}/${doc.slug}` : `${url}/${locale}`
 }
 
 export const plugins: Plugin[] = [

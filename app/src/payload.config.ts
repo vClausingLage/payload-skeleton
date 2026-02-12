@@ -24,7 +24,7 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   localization: {
-    locales,
+    locales: [...locales],
     defaultLocale,
   },
   i18n: {

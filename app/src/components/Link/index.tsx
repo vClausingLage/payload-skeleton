@@ -1,6 +1,10 @@
+'use client'
+
 import { Button, type ButtonProps } from '@/components/ui/button'
 import { cn } from '@/utilities/ui'
+import { getLocaleFromPathname, withLocalePath } from '@/i18n/config'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import React from 'react'
 
 import type { Page, Post } from '@/payload-types'
@@ -21,6 +25,8 @@ type CMSLinkType = {
 }
 
 export const CMSLink: React.FC<CMSLinkType> = (props) => {
+  const pathname = usePathname()
+  const locale = getLocaleFromPathname(pathname)
   const {
     type,
     appearance = 'inline',
@@ -33,12 +39,17 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
     url,
   } = props
 
-  const href =
+  const relationToPath = {
+    pages: '',
+    posts: '/blogs',
+  } as const
+
+  const rawHref =
     type === 'reference' && typeof reference?.value === 'object' && reference.value.slug
-      ? `${reference?.relationTo !== 'pages' ? `/${reference?.relationTo}` : ''}/${
-          reference.value.slug
-        }`
+      ? `${relationToPath[reference.relationTo]}/${reference.value.slug}`
       : url
+
+  const href = rawHref && locale ? withLocalePath(rawHref, locale) : rawHref
 
   if (!href) return null
 
